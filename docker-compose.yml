@@ -1,0 +1,21 @@
+version: '3.8'
+
+services: 
+  orchid-python-api:
+    image: orchid-python-api:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./models:/app/models
+    restart: unless-stopped
+    networks:
+      - sep-orchid-lab-network
+    command: /bin/sh -c "rm -rf /app/cache && uvicorn orchid_api:app --host 0.0.0.0 --port 8000"
+
+networks:
+  sep-orchid-lab-network:
+    external: true
+    driver: bridge

@@ -1,0 +1,23 @@
+name: Docker CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: [self-hosted,python,]
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Build and run with Docker Compose
+        run: |
+          docker compose up -d --build
+
+      - name: Clear Docker cache
+        run: |
+          docker system prune -af
