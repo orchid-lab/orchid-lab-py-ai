@@ -21,11 +21,11 @@ class OrchidClassifier:
             img = Image.open(BytesIO(image_bytes)).convert('RGB')
             #take probabilities from the model
 
-            #output
+            #output of stage result
             stage_result = self.stage_model.predict(img, imgsz=Config.IMG_SIZE, verbose=False)
             stage_class = stage_result[0].probs.top1
             stage_label = self.stage_model.model.names[stage_class]
-
+            #output of disease result
             disease_result = self.disease_model.predict(img, imgsz=Config.IMG_SIZE, verbose=False)
             disease_probs = disease_result[0].probs.data.cpu().numpy()
             disease_label = self.disease_model.model.names[disease_result[0].probs.top1]
