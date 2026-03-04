@@ -13,7 +13,13 @@ services:
     restart: unless-stopped
     networks:
       - sep-orchid-lab-network
-    command: /bin/sh -c "rm -rf /app/cache && uvicorn orchid_api:app --host 0.0.0.0 --port 8000"
+    environment:
+      # Workers configuration
+      # RAM < 2GB: WORKERS=1
+      # RAM 2-4GB: WORKERS=2 (recommended for concurrent users)
+      # RAM > 4GB: WORKERS=4 (high traffic)
+      - WORKERS=2
+    command: /bin/sh -c "rm -rf /app/cache && python orchid_api.py"
 
 networks:
   sep-orchid-lab-network:
